@@ -70,6 +70,7 @@
             // 
             // treeViewOutput
             // 
+            this.treeViewOutput.LabelEdit = true;
             this.treeViewOutput.Location = new System.Drawing.Point(670, 61);
             this.treeViewOutput.Name = "treeViewOutput";
             this.treeViewOutput.Size = new System.Drawing.Size(578, 431);
@@ -146,6 +147,7 @@
             this.Controls.Add(this.panelOutput);
             this.Controls.Add(this.panelInput);
             this.Controls.Add(this.txtInput);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
             this.Text = "JSON Viewer (v1.0)";
             this.panelInput.ResumeLayout(false);

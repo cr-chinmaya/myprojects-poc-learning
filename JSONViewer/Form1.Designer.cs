@@ -30,14 +30,14 @@
         {
             this.txtInput = new System.Windows.Forms.RichTextBox();
             this.panelInput = new System.Windows.Forms.Panel();
+            this.btnRemoveWhiteSpace = new System.Windows.Forms.Button();
+            this.btnFormat = new System.Windows.Forms.Button();
             this.panelOutput = new System.Windows.Forms.Panel();
+            this.btnCollapse = new System.Windows.Forms.Button();
+            this.btnExpand = new System.Windows.Forms.Button();
             this.treeViewOutput = new System.Windows.Forms.TreeView();
             this.btnJsonToTree = new System.Windows.Forms.Button();
             this.btnTreeToJson = new System.Windows.Forms.Button();
-            this.btnFormat = new System.Windows.Forms.Button();
-            this.btnRemoveWhiteSpace = new System.Windows.Forms.Button();
-            this.btnExpand = new System.Windows.Forms.Button();
-            this.btnCollapse = new System.Windows.Forms.Button();
             this.panelInput.SuspendLayout();
             this.panelOutput.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +59,26 @@
             this.panelInput.Size = new System.Drawing.Size(578, 41);
             this.panelInput.TabIndex = 1;
             // 
+            // btnRemoveWhiteSpace
+            // 
+            this.btnRemoveWhiteSpace.Location = new System.Drawing.Point(139, 3);
+            this.btnRemoveWhiteSpace.Name = "btnRemoveWhiteSpace";
+            this.btnRemoveWhiteSpace.Size = new System.Drawing.Size(130, 35);
+            this.btnRemoveWhiteSpace.TabIndex = 7;
+            this.btnRemoveWhiteSpace.Text = "Remove White Space";
+            this.btnRemoveWhiteSpace.UseVisualStyleBackColor = true;
+            this.btnRemoveWhiteSpace.Click += new System.EventHandler(this.btnRemoveWhiteSpace_Click);
+            // 
+            // btnFormat
+            // 
+            this.btnFormat.Location = new System.Drawing.Point(3, 3);
+            this.btnFormat.Name = "btnFormat";
+            this.btnFormat.Size = new System.Drawing.Size(130, 35);
+            this.btnFormat.TabIndex = 6;
+            this.btnFormat.Text = "Format";
+            this.btnFormat.UseVisualStyleBackColor = true;
+            this.btnFormat.Click += new System.EventHandler(this.btnFormat_Click);
+            // 
             // panelOutput
             // 
             this.panelOutput.Controls.Add(this.btnCollapse);
@@ -68,6 +88,26 @@
             this.panelOutput.Size = new System.Drawing.Size(578, 41);
             this.panelOutput.TabIndex = 2;
             // 
+            // btnCollapse
+            // 
+            this.btnCollapse.Location = new System.Drawing.Point(139, 3);
+            this.btnCollapse.Name = "btnCollapse";
+            this.btnCollapse.Size = new System.Drawing.Size(130, 35);
+            this.btnCollapse.TabIndex = 9;
+            this.btnCollapse.Text = "Collapse";
+            this.btnCollapse.UseVisualStyleBackColor = true;
+            this.btnCollapse.Click += new System.EventHandler(this.btnCollapse_Click);
+            // 
+            // btnExpand
+            // 
+            this.btnExpand.Location = new System.Drawing.Point(3, 3);
+            this.btnExpand.Name = "btnExpand";
+            this.btnExpand.Size = new System.Drawing.Size(130, 35);
+            this.btnExpand.TabIndex = 8;
+            this.btnExpand.Text = "Expand";
+            this.btnExpand.UseVisualStyleBackColor = true;
+            this.btnExpand.Click += new System.EventHandler(this.btnExpand_Click);
+            // 
             // treeViewOutput
             // 
             this.treeViewOutput.LabelEdit = true;
@@ -75,6 +115,7 @@
             this.treeViewOutput.Name = "treeViewOutput";
             this.treeViewOutput.Size = new System.Drawing.Size(578, 431);
             this.treeViewOutput.TabIndex = 3;
+            this.treeViewOutput.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewOutput_NodeMouseDoubleClick);
             // 
             // btnJsonToTree
             // 
@@ -95,46 +136,6 @@
             this.btnTreeToJson.Text = "<";
             this.btnTreeToJson.UseVisualStyleBackColor = true;
             this.btnTreeToJson.Click += new System.EventHandler(this.btnTreeToJson_Click);
-            // 
-            // btnFormat
-            // 
-            this.btnFormat.Location = new System.Drawing.Point(3, 3);
-            this.btnFormat.Name = "btnFormat";
-            this.btnFormat.Size = new System.Drawing.Size(130, 35);
-            this.btnFormat.TabIndex = 6;
-            this.btnFormat.Text = "Format";
-            this.btnFormat.UseVisualStyleBackColor = true;
-            this.btnFormat.Click += new System.EventHandler(this.btnFormat_Click);
-            // 
-            // btnRemoveWhiteSpace
-            // 
-            this.btnRemoveWhiteSpace.Location = new System.Drawing.Point(139, 3);
-            this.btnRemoveWhiteSpace.Name = "btnRemoveWhiteSpace";
-            this.btnRemoveWhiteSpace.Size = new System.Drawing.Size(130, 35);
-            this.btnRemoveWhiteSpace.TabIndex = 7;
-            this.btnRemoveWhiteSpace.Text = "Remove White Space";
-            this.btnRemoveWhiteSpace.UseVisualStyleBackColor = true;
-            this.btnRemoveWhiteSpace.Click += new System.EventHandler(this.btnRemoveWhiteSpace_Click);
-            // 
-            // btnExpand
-            // 
-            this.btnExpand.Location = new System.Drawing.Point(3, 3);
-            this.btnExpand.Name = "btnExpand";
-            this.btnExpand.Size = new System.Drawing.Size(130, 35);
-            this.btnExpand.TabIndex = 8;
-            this.btnExpand.Text = "Expand";
-            this.btnExpand.UseVisualStyleBackColor = true;
-            this.btnExpand.Click += new System.EventHandler(this.btnExpand_Click);
-            // 
-            // btnCollapse
-            // 
-            this.btnCollapse.Location = new System.Drawing.Point(139, 3);
-            this.btnCollapse.Name = "btnCollapse";
-            this.btnCollapse.Size = new System.Drawing.Size(130, 35);
-            this.btnCollapse.TabIndex = 9;
-            this.btnCollapse.Text = "Collapse";
-            this.btnCollapse.UseVisualStyleBackColor = true;
-            this.btnCollapse.Click += new System.EventHandler(this.btnCollapse_Click);
             // 
             // Form1
             // 

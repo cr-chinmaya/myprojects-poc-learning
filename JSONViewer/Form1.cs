@@ -16,7 +16,7 @@ namespace JSONViewer
 {
     public partial class Form1 : Form
     {
-        string inputString = string.Empty;        
+        string inputString = string.Empty;
         public Form1()
         {
             InitializeComponent();
@@ -82,6 +82,36 @@ namespace JSONViewer
             txtInput.Text = JsonConvert.SerializeXNode(document.Root.LastNode, Newtonsoft.Json.Formatting.None, true);
 
         }
+
+        private void treeViewOutput_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            NodeForm n = new NodeForm();
+            n.ShowDialog();
+            if (n.CanRemove)
+            {
+                if (treeViewOutput.SelectedNode != null)
+                {                    
+                    DialogResult result = MessageBox.Show("Are you sure you want to remove the node " + treeViewOutput.SelectedNode.ToString() + "?", "Remove Node", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
+                    {
+                        treeViewOutput.SelectedNode.Remove();
+                    }
+                }
+            }
+            else
+            {
+                TreeNode nod = new TreeNode();
+                if (n.NewNodeName != null && n.NewNodeText != null)
+                {
+                    nod.Name = n.NewNodeName.ToString();
+                    nod.Text = string.Format("{0}={1}", n.NewNodeName.ToString(), n.NewNodeText.ToString());
+                    treeViewOutput.SelectedNode.Nodes.Add(nod);
+                    treeViewOutput.SelectedNode.ExpandAll();
+                }
+            }            
+            n.Close();
+        }
+
         #endregion Event Handlers
 
         #region Helpers
@@ -144,10 +174,10 @@ namespace JSONViewer
                     {
                         var childElement = new XElement(treeViewNode.Parent.Text, CreateXmlElement(treeViewNode.Nodes));
                         if (treeViewNode.GetNodeCount(true) == 0 && treeViewNode.Text.Split('=').ToList().Count > 0)
-                            childElement.Value = treeViewNode.Text.Split('=')[1];                        
-                        elements.Add(childElement);                        
+                            childElement.Value = treeViewNode.Text.Split('=')[1];
+                        elements.Add(childElement);
                     }
-                    else if(treeViewNode.Text.Split('=')[0].StartsWith("[") && treeViewNode.Text.Split('=').ToList().Count == 0)
+                    else if (treeViewNode.Text.Split('=')[0].StartsWith("[") && treeViewNode.Text.Split('=').ToList().Count == 0)
                     {
                         var childElement = new XElement(treeViewNode.Parent.Text);
                         childElement.Value = treeViewNode.Text.Split('=')[1];
@@ -167,7 +197,7 @@ namespace JSONViewer
                                 foreach (var node in element.Nodes())
                                 {
                                     elements.Add((XElement)node);
-                                }                                
+                                }
                             }
                             else
                             {
@@ -187,7 +217,6 @@ namespace JSONViewer
             }
             return elements;
         }
-        #endregion Helpers
-
+        #endregion Helpers    
     }
 }

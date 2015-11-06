@@ -2,15 +2,13 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Dynamic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace JSONViewer
 {
@@ -69,7 +67,7 @@ namespace JSONViewer
                 treeViewOutput.Nodes.Clear();
                 LoadJsonToTreeView(treeViewOutput, inputString);
             }
-            catch
+            catch (Exception)
             {
                 MessageBox.Show("Invalid JSON String");
             }
@@ -80,7 +78,6 @@ namespace JSONViewer
             var rootElement = new XElement("JSON", CreateXmlElement(treeViewOutput.Nodes));
             var document = new XDocument(rootElement);
             txtInput.Text = JsonConvert.SerializeXNode(document.Root.LastNode, Newtonsoft.Json.Formatting.None, true);
-
         }
 
         private void treeViewOutput_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -90,7 +87,7 @@ namespace JSONViewer
             if (n.CanRemove)
             {
                 if (treeViewOutput.SelectedNode != null)
-                {                    
+                {
                     DialogResult result = MessageBox.Show("Are you sure you want to remove the node " + treeViewOutput.SelectedNode.ToString() + "?", "Remove Node", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
@@ -108,7 +105,7 @@ namespace JSONViewer
                     treeViewOutput.SelectedNode.Nodes.Add(nod);
                     treeViewOutput.SelectedNode.ExpandAll();
                 }
-            }            
+            }
             n.Close();
         }
 
@@ -128,7 +125,10 @@ namespace JSONViewer
 
         private void AddObjectNodes(JObject @object, string name, TreeNodeCollection parent)
         {
-            var node = new TreeNode(name);
+            int imageIndex = 0;
+            if (name.StartsWith("["))
+                imageIndex = 5;
+            var node = new TreeNode(name, imageIndex, imageIndex);
             parent.Add(node);
 
             foreach (var property in @object.Properties())
@@ -139,7 +139,7 @@ namespace JSONViewer
 
         private void AddArrayNodes(JArray array, string name, TreeNodeCollection parent)
         {
-            var node = new TreeNode(name);
+            var node = new TreeNode(name, 1, 1);
             parent.Add(node);
             for (var i = 0; i < array.Count; i++)
             {
@@ -151,7 +151,17 @@ namespace JSONViewer
         {
             if (token is JValue)
             {
-                parent.Add(new TreeNode(string.Format("{0}={1}", name, ((JValue)token).Value)));
+                if (((JValue)token).Value != null)
+                {
+                    int imageIndex = 2;
+                    if (((JValue)token).Value is Int64 || ((JValue)token).Value is Double)
+                        imageIndex = 3;
+                    else if (name.StartsWith("["))
+                        imageIndex = 5;
+                    parent.Add(new TreeNode(string.Format("{0}={1}", name, ((JValue)token).Value), imageIndex, imageIndex));
+                }
+                else
+                    parent.Add(new TreeNode(string.Format("{0}", name), 4, 4));
             }
             else if (token is JArray)
             {
@@ -187,7 +197,9 @@ namespace JSONViewer
                     {
                         var element = new XElement(treeViewNode.Text.Split('=')[0]);
                         if (treeViewNode.GetNodeCount(true) == 0 && treeViewNode.Text.Split('=').ToList().Count > 0)
+                        {
                             element.Value = treeViewNode.Text.Split('=')[1];
+                        }
                         else
                             element.Add(CreateXmlElement(treeViewNode.Nodes));
                         if (element.FirstNode is XElement)
@@ -210,13 +222,13 @@ namespace JSONViewer
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
             }
             return elements;
         }
-        #endregion Helpers    
-    }
+        #endregion Helpers         
+    }    
 }

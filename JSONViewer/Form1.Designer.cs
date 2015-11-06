@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtInput = new System.Windows.Forms.RichTextBox();
             this.panelInput = new System.Windows.Forms.Panel();
             this.btnRemoveWhiteSpace = new System.Windows.Forms.Button();
@@ -38,6 +40,7 @@
             this.treeViewOutput = new System.Windows.Forms.TreeView();
             this.btnJsonToTree = new System.Windows.Forms.Button();
             this.btnTreeToJson = new System.Windows.Forms.Button();
+            this.nodeImageList = new System.Windows.Forms.ImageList(this.components);
             this.panelInput.SuspendLayout();
             this.panelOutput.SuspendLayout();
             this.SuspendLayout();
@@ -110,9 +113,12 @@
             // 
             // treeViewOutput
             // 
+            this.treeViewOutput.ImageIndex = 0;
+            this.treeViewOutput.ImageList = this.nodeImageList;
             this.treeViewOutput.LabelEdit = true;
             this.treeViewOutput.Location = new System.Drawing.Point(670, 61);
             this.treeViewOutput.Name = "treeViewOutput";
+            this.treeViewOutput.SelectedImageIndex = 0;
             this.treeViewOutput.Size = new System.Drawing.Size(578, 431);
             this.treeViewOutput.TabIndex = 3;
             this.treeViewOutput.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewOutput_NodeMouseDoubleClick);
@@ -136,6 +142,17 @@
             this.btnTreeToJson.Text = "<";
             this.btnTreeToJson.UseVisualStyleBackColor = true;
             this.btnTreeToJson.Click += new System.EventHandler(this.btnTreeToJson_Click);
+            // 
+            // nodeImageList
+            // 
+            this.nodeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("nodeImageList.ImageStream")));
+            this.nodeImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.nodeImageList.Images.SetKeyName(0, "Curly_Braces.png");
+            this.nodeImageList.Images.SetKeyName(1, "Square_Brackets.png");
+            this.nodeImageList.Images.SetKeyName(2, "Box_Blue.png");
+            this.nodeImageList.Images.SetKeyName(3, "Box_Green.png");
+            this.nodeImageList.Images.SetKeyName(4, "Box_Red.png");
+            this.nodeImageList.Images.SetKeyName(5, "Box_Orange.png");
             // 
             // Form1
             // 
@@ -169,6 +186,7 @@
         private System.Windows.Forms.TreeView treeViewOutput;
         private System.Windows.Forms.Button btnJsonToTree;
         private System.Windows.Forms.Button btnTreeToJson;
+        private System.Windows.Forms.ImageList nodeImageList;
     }
 }
 

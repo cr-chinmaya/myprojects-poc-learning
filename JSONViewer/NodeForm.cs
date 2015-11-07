@@ -14,7 +14,6 @@ namespace JSONViewer
     {
         private string mNewNodeName;
         private string mNewNodeText;
-        private bool canRemove;
 
         public string NewNodeName
         {
@@ -39,18 +38,6 @@ namespace JSONViewer
                 mNewNodeText = value;
             }
         }
-        public bool CanRemove
-        {
-            get
-            {
-                return canRemove;
-            }
-            set
-            {
-                canRemove = value;
-            }
-
-        }
         public NodeForm()
         {
             InitializeComponent();
@@ -68,28 +55,8 @@ namespace JSONViewer
                 return;
             }
 
-            if (txtNodeText.Text != string.Empty)
-            {
-                NewNodeText = txtNodeText.Text;
-            }
-            else
-            {
-                MessageBox.Show("Provide the new node's text");
-                return;
-            }
-            CanRemove = false;
+            NewNodeText = txtNodeText.Text;
 
-            this.Close();
-        }
-
-        private void btnAddNode_Click(object sender, EventArgs e)
-        {
-            panelAddNode.Visible = true;
-        }
-
-        private void btnRemoveNode_Click(object sender, EventArgs e)
-        {
-            CanRemove = true;
             this.Close();
         }
     }

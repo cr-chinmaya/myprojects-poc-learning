@@ -38,11 +38,15 @@
             this.btnCollapse = new System.Windows.Forms.Button();
             this.btnExpand = new System.Windows.Forms.Button();
             this.treeViewOutput = new System.Windows.Forms.TreeView();
+            this.nodeImageList = new System.Windows.Forms.ImageList(this.components);
             this.btnJsonToTree = new System.Windows.Forms.Button();
             this.btnTreeToJson = new System.Windows.Forms.Button();
-            this.nodeImageList = new System.Windows.Forms.ImageList(this.components);
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.panelInput.SuspendLayout();
             this.panelOutput.SuspendLayout();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtInput
@@ -121,7 +125,18 @@
             this.treeViewOutput.SelectedImageIndex = 0;
             this.treeViewOutput.Size = new System.Drawing.Size(578, 431);
             this.treeViewOutput.TabIndex = 3;
-            this.treeViewOutput.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewOutput_NodeMouseDoubleClick);
+            this.treeViewOutput.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewOutput_NodeMouseClick);
+            // 
+            // nodeImageList
+            // 
+            this.nodeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("nodeImageList.ImageStream")));
+            this.nodeImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.nodeImageList.Images.SetKeyName(0, "Curly_Braces.png");
+            this.nodeImageList.Images.SetKeyName(1, "Square_Brackets.png");
+            this.nodeImageList.Images.SetKeyName(2, "Box_Blue.png");
+            this.nodeImageList.Images.SetKeyName(3, "Box_Green.png");
+            this.nodeImageList.Images.SetKeyName(4, "Box_Red.png");
+            this.nodeImageList.Images.SetKeyName(5, "Box_Orange.png");
             // 
             // btnJsonToTree
             // 
@@ -143,16 +158,27 @@
             this.btnTreeToJson.UseVisualStyleBackColor = true;
             this.btnTreeToJson.Click += new System.EventHandler(this.btnTreeToJson_Click);
             // 
-            // nodeImageList
+            // contextMenuStrip
             // 
-            this.nodeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("nodeImageList.ImageStream")));
-            this.nodeImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.nodeImageList.Images.SetKeyName(0, "Curly_Braces.png");
-            this.nodeImageList.Images.SetKeyName(1, "Square_Brackets.png");
-            this.nodeImageList.Images.SetKeyName(2, "Box_Blue.png");
-            this.nodeImageList.Images.SetKeyName(3, "Box_Green.png");
-            this.nodeImageList.Images.SetKeyName(4, "Box_Red.png");
-            this.nodeImageList.Images.SetKeyName(5, "Box_Orange.png");
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemAdd,
+            this.toolStripMenuItemRemove});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.Size = new System.Drawing.Size(153, 70);
+            // 
+            // toolStripMenuItemAdd
+            // 
+            this.toolStripMenuItemAdd.Name = "toolStripMenuItemAdd";
+            this.toolStripMenuItemAdd.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAdd.Text = "Add";
+            this.toolStripMenuItemAdd.Click += new System.EventHandler(this.myMenuItemAdd_Click);
+            // 
+            // toolStripMenuItemRemove
+            // 
+            this.toolStripMenuItemRemove.Name = "toolStripMenuItemRemove";
+            this.toolStripMenuItemRemove.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemRemove.Text = "Remove";
+            this.toolStripMenuItemRemove.Click += new System.EventHandler(this.myMenuItemRemove_Click);
             // 
             // Form1
             // 
@@ -170,6 +196,7 @@
             this.Text = "JSON Viewer (v1.0)";
             this.panelInput.ResumeLayout(false);
             this.panelOutput.ResumeLayout(false);
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -187,6 +214,9 @@
         private System.Windows.Forms.Button btnJsonToTree;
         private System.Windows.Forms.Button btnTreeToJson;
         private System.Windows.Forms.ImageList nodeImageList;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAdd;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRemove;
     }
 }
 

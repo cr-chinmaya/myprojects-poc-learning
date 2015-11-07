@@ -21,6 +21,64 @@ namespace JSONViewer
         }
 
         #region Event Handlers
+
+        private void myMenuItemAdd_Click(object sender, EventArgs e)
+        {
+            NodeForm n = new NodeForm();
+            n.ShowDialog();
+            TreeNode nod;
+            if (!string.IsNullOrEmpty(n.NewNodeName))
+            {
+                int imageIndex = 4;
+                if (!string.IsNullOrEmpty(n.NewNodeText))
+                {
+                    imageIndex = 2;
+                    int numberInt;double numberDouble;                    
+                    if (int.TryParse(n.NewNodeText, out numberInt) || (double.TryParse(n.NewNodeText, out numberDouble)))
+                    {                       
+                        imageIndex = 3;
+                    }
+                    else if (n.NewNodeName.StartsWith("["))
+                    {
+                        imageIndex = 5;                                         
+                    }                    
+                    nod = new TreeNode(string.Format("{0}={1}", n.NewNodeName.ToString(), n.NewNodeText.ToString()), imageIndex, imageIndex);
+                    nod.Name = n.NewNodeName.ToString();                    
+                    treeViewOutput.SelectedNode.Nodes.Add(nod);
+                }
+                else
+                {
+                    nod = new TreeNode(string.Format("{0}", n.NewNodeName.ToString()), imageIndex, imageIndex);
+                    nod.Name = n.NewNodeName.ToString();                    
+                    treeViewOutput.SelectedNode.Nodes.Add(nod);
+                }                
+                treeViewOutput.SelectedNode.ExpandAll();
+            }
+            n.Close();
+        }
+
+        private void myMenuItemRemove_Click(object sender, EventArgs e)
+        {
+            if (treeViewOutput.SelectedNode != null)
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to remove the node " + treeViewOutput.SelectedNode.ToString() + "?", "Remove Node", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    treeViewOutput.SelectedNode.Remove();
+                }
+            }
+        }
+
+        private void treeViewOutput_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // Select the clicked node
+                treeViewOutput.SelectedNode = treeViewOutput.GetNodeAt(e.X, e.Y);
+                contextMenuStrip.Show(treeViewOutput, e.Location);
+            }
+        }
+
         private void btnFormat_Click(object sender, EventArgs e)
         {
             inputString = txtInput.Text;
@@ -77,36 +135,13 @@ namespace JSONViewer
         {
             var rootElement = new XElement("JSON", CreateXmlElement(treeViewOutput.Nodes));
             var document = new XDocument(rootElement);
-            txtInput.Text = JsonConvert.SerializeXNode(document.Root.LastNode, Newtonsoft.Json.Formatting.None, true);
-        }
+            txtInput.Text = JsonConvert.SerializeXNode(document.Root.LastNode, Newtonsoft.Json.Formatting.Indented, true);
+            dynamic obj = JsonConvert.DeserializeObject<dynamic>(txtInput.Text);
 
-        private void treeViewOutput_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            NodeForm n = new NodeForm();
-            n.ShowDialog();
-            if (n.CanRemove)
-            {
-                if (treeViewOutput.SelectedNode != null)
-                {
-                    DialogResult result = MessageBox.Show("Are you sure you want to remove the node " + treeViewOutput.SelectedNode.ToString() + "?", "Remove Node", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        treeViewOutput.SelectedNode.Remove();
-                    }
-                }
-            }
-            else
-            {
-                TreeNode nod = new TreeNode();
-                if (n.NewNodeName != null && n.NewNodeText != null)
-                {
-                    nod.Name = n.NewNodeName.ToString();
-                    nod.Text = string.Format("{0}={1}", n.NewNodeName.ToString(), n.NewNodeText.ToString());
-                    treeViewOutput.SelectedNode.Nodes.Add(nod);
-                    treeViewOutput.SelectedNode.ExpandAll();
-                }
-            }
-            n.Close();
+            var op = obj.operation.ToString();
+            int numberInt;
+            int.TryParse(op, out numberInt);
+            obj.operation = new Int64();
         }
 
         #endregion Event Handlers
@@ -151,9 +186,10 @@ namespace JSONViewer
         {
             if (token is JValue)
             {
+                int imageIndex = 4;
                 if (((JValue)token).Value != null)
                 {
-                    int imageIndex = 2;
+                    imageIndex = 2;
                     if (((JValue)token).Value is Int64 || ((JValue)token).Value is Double)
                         imageIndex = 3;
                     else if (name.StartsWith("["))
@@ -161,7 +197,7 @@ namespace JSONViewer
                     parent.Add(new TreeNode(string.Format("{0}={1}", name, ((JValue)token).Value), imageIndex, imageIndex));
                 }
                 else
-                    parent.Add(new TreeNode(string.Format("{0}", name), 4, 4));
+                    parent.Add(new TreeNode(string.Format("{0}", name), imageIndex, imageIndex));
             }
             else if (token is JArray)
             {
@@ -229,6 +265,6 @@ namespace JSONViewer
             }
             return elements;
         }
-        #endregion Helpers         
-    }    
+        #endregion Helpers                    
+    }
 }

@@ -2,13 +2,9 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Dynamic;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace JSONViewer
 {
@@ -124,6 +120,7 @@ namespace JSONViewer
                 inputString = txtInput.Text;
                 treeViewOutput.Nodes.Clear();
                 LoadJsonToTreeView(treeViewOutput, inputString);
+                treeViewOutput.ExpandAll();
             }
             catch (Exception)
             {
@@ -139,60 +136,17 @@ namespace JSONViewer
             JObject obj = JObject.Parse(tempJson);
             var objCopy = ConvertTypeJSON(obj);
             txtInput.Text = objCopy.ToString();
-        }
-
-        private JToken ConvertTypeJSON(JToken obj)
-        {
-            JObject objCopy = new JObject();
-            if (obj is JValue)
-            {
-                int num; DateTime dt;
-                if (int.TryParse(obj.ToString(), out num))
-                {
-                    obj = num;
-                }
-                else if (DateTime.TryParse(obj.ToString(), out dt))
-                {
-                    obj = dt;
-                }
-                return obj;
-            }
-            foreach (var x in obj)
-            {
-                if (x is JProperty)
-                {
-                    int num; DateTime dt;
-                    JProperty newProp = (JProperty)x;
-                    if (int.TryParse(((JProperty)x).Value.ToString(), out num))
-                    {
-                        newProp = new JProperty(((JProperty)x).Name, num);
-                    }
-                    else if (DateTime.TryParse(((JProperty)x).Value.ToString(), out dt))
-                    {
-                        newProp = new JProperty(((JProperty)x).Name, dt);
-                    }
-                    else if (((JProperty)x).Value is JObject)
-                    {
-                        newProp = new JProperty(((JProperty)x).Name, ConvertTypeJSON(((JProperty)x).Value));
-                    }
-                    else if (((JProperty)x).Value is JArray)
-                    {
-                        JArray newJArray = new JArray();
-                        foreach (var item in ((JProperty)x).Value)
-                        {
-                            newJArray.Add(ConvertTypeJSON(item));
-                            newProp = new JProperty(((JProperty)x).Name, newJArray);
-                        }
-                    }
-                    objCopy.Add(newProp);
-                }
-            }
-            return objCopy;
-        }
+        }        
 
         #endregion Event Handlers
 
         #region Helpers
+
+        /// <summary>
+        /// Forms the Tree Nodes from JSON string by calling AddObjectNode method
+        /// </summary>
+        /// <param name="treeView"></param>
+        /// <param name="json"></param>
         private void LoadJsonToTreeView(TreeView treeView, string json)
         {
             if (string.IsNullOrWhiteSpace(json))
@@ -204,6 +158,12 @@ namespace JSONViewer
             AddObjectNodes(@object, "JSON", treeView.Nodes);
         }
 
+        /// <summary>
+        /// Forms Object Nodes from given string and adds the nodes to the parent TreeNodeCollection
+        /// </summary>
+        /// <param name="@object"></param>
+        /// <param name="name"></param>
+        /// <param name="parent"></param>
         private void AddObjectNodes(JObject @object, string name, TreeNodeCollection parent)
         {
             int imageIndex = 0;
@@ -218,6 +178,12 @@ namespace JSONViewer
             }
         }
 
+        /// <summary>
+        /// Forms Array Nodes from given string and adds the nodes to the parent TreeNodeCollection
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="name"></param>
+        /// <param name="parent"></param>
         private void AddArrayNodes(JArray array, string name, TreeNodeCollection parent)
         {
             var node = new TreeNode(name, 1, 1);
@@ -228,6 +194,12 @@ namespace JSONViewer
             }
         }
 
+        /// <summary>
+        /// Forms Token Nodes from given string and adds the nodes to the parent TreeNodeCollection
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="name"></param>
+        /// <param name="parent"></param>
         private void AddTokenNodes(JToken token, string name, TreeNodeCollection parent)
         {
             if (token is JValue)
@@ -255,6 +227,86 @@ namespace JSONViewer
             }
         }
 
+        /// <summary>
+        /// Converts the properties of JSON from String to native types
+        /// Considered int/Double/Boolean/DateTime 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private JToken ConvertTypeJSON(JToken obj)
+        {
+            JObject objCopy = new JObject();
+            if (obj is JValue)
+            {
+                int num; Double decimalValue; DateTime dt; Boolean flag;
+                if (int.TryParse(obj.ToString(), out num))
+                {
+                    obj = num;
+                }
+                else if (Double.TryParse(obj.ToString(), out decimalValue))
+                {
+                    obj = decimalValue;
+                }
+                else if (DateTime.TryParse(obj.ToString(), out dt))
+                {
+                    obj = dt;
+                }
+                else if (Boolean.TryParse(obj.ToString(), out flag))
+                {
+                    obj = flag;
+                }
+                return obj;
+            }
+            foreach (var x in obj)
+            {
+                if (x is JProperty)
+                {
+                    int num; Double decimalValue; DateTime dt; Boolean flag;
+                    JProperty newProp = (JProperty)x;
+                    //Converting string to Int
+                    if (int.TryParse(((JProperty)x).Value.ToString(), out num))
+                    {
+                        newProp = new JProperty(((JProperty)x).Name, num);
+                    }
+                    //Converting string to Double
+                    else if (Double.TryParse(((JProperty)x).Value.ToString(), out decimalValue))
+                    {
+                        newProp = new JProperty(((JProperty)x).Name, decimalValue);
+                    }
+                    //Converting string to DateTime
+                    else if (DateTime.TryParse(((JProperty)x).Value.ToString(), out dt))
+                    {
+                        newProp = new JProperty(((JProperty)x).Name, dt);
+                    }
+                    //Converting string to Boolean
+                    else if (Boolean.TryParse(((JProperty)x).Value.ToString(), out flag))
+                    {
+                        newProp = new JProperty(((JProperty)x).Name, flag);
+                    }
+                    else if (((JProperty)x).Value is JObject)
+                    {
+                        newProp = new JProperty(((JProperty)x).Name, ConvertTypeJSON(((JProperty)x).Value));
+                    }
+                    else if (((JProperty)x).Value is JArray)
+                    {
+                        JArray newJArray = new JArray();
+                        foreach (var item in ((JProperty)x).Value)
+                        {
+                            newJArray.Add(ConvertTypeJSON(item));
+                            newProp = new JProperty(((JProperty)x).Name, newJArray);
+                        }
+                    }
+                    objCopy.Add(newProp);
+                }
+            }
+            return objCopy;
+        }
+
+        /// <summary>
+        /// Creates XML from TreeNodeCollection
+        /// </summary>
+        /// <param name="treeViewNodes"></param>
+        /// <returns></returns>
         private List<XElement> CreateXmlElement(TreeNodeCollection treeViewNodes)
         {
             var elements = new List<XElement>();
@@ -278,7 +330,7 @@ namespace JSONViewer
                     else
                     {
                         var element = new XElement(treeViewNode.Text.Split('=')[0]);
-                        if (treeViewNode.GetNodeCount(true) == 0 && treeViewNode.Text.Split('=').ToList().Count > 0)
+                        if (treeViewNode.GetNodeCount(true) == 0 && treeViewNode.Text.Split('=').ToList().Count > 1)
                         {
                             element.Value = treeViewNode.Text.Split('=')[1];
                         }
@@ -306,7 +358,7 @@ namespace JSONViewer
                 }
                 catch (Exception)
                 {
-
+                    //Do Nothing
                 }
             }
             return elements;

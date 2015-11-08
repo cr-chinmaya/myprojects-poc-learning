@@ -117,12 +117,9 @@
             // 
             // treeViewOutput
             // 
-            this.treeViewOutput.ImageIndex = 0;
-            this.treeViewOutput.ImageList = this.nodeImageList;
             this.treeViewOutput.LabelEdit = true;
             this.treeViewOutput.Location = new System.Drawing.Point(670, 61);
             this.treeViewOutput.Name = "treeViewOutput";
-            this.treeViewOutput.SelectedImageIndex = 0;
             this.treeViewOutput.Size = new System.Drawing.Size(578, 431);
             this.treeViewOutput.TabIndex = 3;
             this.treeViewOutput.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewOutput_NodeMouseClick);
@@ -164,19 +161,19 @@
             this.toolStripMenuItemAdd,
             this.toolStripMenuItemRemove});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip.Size = new System.Drawing.Size(118, 48);
             // 
             // toolStripMenuItemAdd
             // 
             this.toolStripMenuItemAdd.Name = "toolStripMenuItemAdd";
-            this.toolStripMenuItemAdd.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemAdd.Size = new System.Drawing.Size(117, 22);
             this.toolStripMenuItemAdd.Text = "Add";
             this.toolStripMenuItemAdd.Click += new System.EventHandler(this.myMenuItemAdd_Click);
             // 
             // toolStripMenuItemRemove
             // 
             this.toolStripMenuItemRemove.Name = "toolStripMenuItemRemove";
-            this.toolStripMenuItemRemove.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemRemove.Size = new System.Drawing.Size(117, 22);
             this.toolStripMenuItemRemove.Text = "Remove";
             this.toolStripMenuItemRemove.Click += new System.EventHandler(this.myMenuItemRemove_Click);
             // 

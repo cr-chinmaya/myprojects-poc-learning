@@ -193,7 +193,44 @@ namespace JSONViewer
         {
             treeViewOutput.SelectedNode.Collapse();
         }
-        
+
+        private void contextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (treeViewOutput.SelectedNode.IsExpanded)
+            {
+                expandToolStripMenuItem.Enabled = false;
+                expandAllToolStripMenuItem.Enabled = false;
+                collapseToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                expandToolStripMenuItem.Enabled = true;
+                expandAllToolStripMenuItem.Enabled = true;
+                collapseToolStripMenuItem.Enabled = false;
+            }
+            if(treeViewOutput.SelectedNode.FirstNode == null)
+            {
+                expandToolStripMenuItem.Enabled = false;
+                expandAllToolStripMenuItem.Enabled = false;
+                collapseToolStripMenuItem.Enabled = false;
+            }
+        }
+
+        private void contextMenuStripForTxtBox_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtInput.SelectedText))
+            {
+                cutToolStripMenuItem.Enabled = false;
+                copyToolStripMenuItem.Enabled = false;
+                deleteToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                cutToolStripMenuItem.Enabled = true;
+                copyToolStripMenuItem.Enabled = true;
+                deleteToolStripMenuItem.Enabled = true;
+            }
+        }
         #endregion Event Handlers
 
         #region Helpers
@@ -422,6 +459,6 @@ namespace JSONViewer
             }
             return elements;
         }
-        #endregion Helpers                                            
+        #endregion Helpers                                                           
     }
 }

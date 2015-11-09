@@ -130,14 +130,70 @@ namespace JSONViewer
 
         private void btnTreeToJson_Click(object sender, EventArgs e)
         {
-            var rootElement = new XElement("JSON", CreateXmlElement(treeViewOutput.Nodes));
-            var document = new XDocument(rootElement);
-            string tempJson = JsonConvert.SerializeXNode(document.Root.LastNode, Newtonsoft.Json.Formatting.Indented, true);
-            JObject obj = JObject.Parse(tempJson);
-            var objCopy = ConvertTypeJSON(obj);
-            txtInput.Text = objCopy.ToString();
-        }        
+            try
+            {
+                var rootElement = new XElement("JSON", CreateXmlElement(treeViewOutput.Nodes));
+                var document = new XDocument(rootElement);
+                if (document.Root.LastNode != null && !((XElement)document.Root.LastNode).IsEmpty)
+                {
+                    string tempJson = JsonConvert.SerializeXNode(document.Root.LastNode, Newtonsoft.Json.Formatting.Indented, true);
+                    JObject obj = JObject.Parse(tempJson);
+                    var objCopy = ConvertTypeJSON(obj);
+                    txtInput.Text = objCopy.ToString();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Failed to Parse TreeView!");
+            } 
+            
+        }
 
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtInput.Cut();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtInput.Copy();
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtInput.Paste();
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtInput.Undo();
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtInput.SelectedText = string.Empty;
+        }
+
+        private void selectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            txtInput.SelectAll();
+        }
+
+        private void expandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            treeViewOutput.SelectedNode.Expand();
+        }
+
+        private void expandAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            treeViewOutput.SelectedNode.ExpandAll();
+        }
+
+        private void collapseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            treeViewOutput.SelectedNode.Collapse();
+        }
+        
         #endregion Event Handlers
 
         #region Helpers
@@ -366,6 +422,6 @@ namespace JSONViewer
             }
             return elements;
         }
-        #endregion Helpers                    
+        #endregion Helpers                                            
     }
 }

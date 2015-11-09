@@ -292,6 +292,7 @@ namespace JSONViewer
                         JArray newJArray = new JArray();
                         foreach (var item in ((JProperty)x).Value)
                         {
+                            if(!string.IsNullOrEmpty(item.ToString()) || item.HasValues)
                             newJArray.Add(ConvertTypeJSON(item));
                             newProp = new JProperty(((JProperty)x).Name, newJArray);
                         }
@@ -319,6 +320,8 @@ namespace JSONViewer
                         var childElement = new XElement(treeViewNode.Parent.Text, CreateXmlElement(treeViewNode.Nodes));
                         if (treeViewNode.GetNodeCount(true) == 0 && treeViewNode.Text.Split('=').ToList().Count > 0)
                             childElement.Value = treeViewNode.Text.Split('=')[1];
+                        if (treeViewNode.Parent.GetNodeCount(false) == 1)
+                            elements.Add(new XElement(treeViewNode.Parent.Text, ""));
                         elements.Add(childElement);
                     }
                     else if (treeViewNode.Text.Split('=')[0].StartsWith("[") && treeViewNode.Text.Split('=').ToList().Count == 0)

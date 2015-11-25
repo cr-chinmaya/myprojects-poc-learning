@@ -21,9 +21,55 @@ namespace JSONViewer
             {
                 return;
             }
+            if (IsJObject(json))
+            {
+                var @object = JObject.Parse(json);
+                AddObjectNodes(@object, "JSON", treeView.Nodes);
+            }
+            else if (IsJArray(json))
+            {
+                var @array = JArray.Parse(json);                
+                AddArrayNodes(@array, "JSON", treeView.Nodes);
+            }
+            else
+            {
+                throw new Exception("Invalid String");
+            }
+        }
+        /// <summary>
+        /// Checks whether string is JArray
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public bool IsJArray(string json)
+        {
+            try
+            {
+                JArray.Parse(json);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
-            var @object = JObject.Parse(json);
-            AddObjectNodes(@object, "JSON", treeView.Nodes);
+        /// <summary>
+        /// Checks whether string is JObject
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public bool IsJObject(string json)
+        {
+            try
+            {
+                JObject.Parse(json);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>

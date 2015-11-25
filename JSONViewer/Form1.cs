@@ -80,8 +80,21 @@ namespace JSONViewer
             inputString = txtInput.Text;
             try
             {
-                JObject input = JObject.Parse(inputString);
-                txtInput.Text = JsonConvert.SerializeObject(input, Newtonsoft.Json.Formatting.Indented);
+                JSONHelper jsonHelper = new JSONHelper();
+                if (jsonHelper.IsJObject(inputString))
+                {
+                    JObject input = JObject.Parse(inputString);
+                    txtInput.Text = JsonConvert.SerializeObject(input, Newtonsoft.Json.Formatting.Indented);
+                }
+                else if (jsonHelper.IsJArray(inputString))
+                {
+                    JArray input = JArray.Parse(inputString);
+                    txtInput.Text = JsonConvert.SerializeObject(input, Newtonsoft.Json.Formatting.Indented);
+                }
+                else
+                {
+                    throw new Exception("Invalid String");
+                }
             }
             catch
             {
@@ -94,8 +107,21 @@ namespace JSONViewer
             inputString = txtInput.Text;
             try
             {
-                JObject input = JObject.Parse(inputString);
-                txtInput.Text = JsonConvert.SerializeObject(input);
+                JSONHelper jsonHelper = new JSONHelper();
+                if (jsonHelper.IsJObject(inputString))
+                {
+                    JObject input = JObject.Parse(inputString);
+                    txtInput.Text = JsonConvert.SerializeObject(input);
+                }
+                else if (jsonHelper.IsJArray(inputString))
+                {
+                    JArray input = JArray.Parse(inputString);
+                    txtInput.Text = JsonConvert.SerializeObject(input);
+                }
+                else
+                {
+                    throw new Exception("Invalid String");
+                }                
             }
             catch
             {
@@ -136,13 +162,14 @@ namespace JSONViewer
                 XMLHelper xmlHelper = new XMLHelper();
                 var rootElement = new XElement("JSON", xmlHelper.CreateXmlElement(treeViewOutput.Nodes));
                 var document = new XDocument(rootElement);
-                if (document.Root.LastNode != null && !((XElement)document.Root.LastNode).IsEmpty)
+                if (document.Root != null)
                 {
-                    string tempJson = JsonConvert.SerializeXNode(document.Root.LastNode, Newtonsoft.Json.Formatting.Indented, true);
+                    string tempJson = JsonConvert.SerializeXNode(document.Root, Newtonsoft.Json.Formatting.Indented, true);
                     JObject obj = JObject.Parse(tempJson);
                     JSONHelper jsonHelper = new JSONHelper();
                     var objCopy = jsonHelper.ConvertTypeJSON(obj);
-                    txtInput.Text = objCopy.ToString();
+                    int indexOfRoot = (objCopy.ToString()).IndexOf("JSON");
+                    txtInput.Text = (objCopy.ToString()).Substring(indexOfRoot + 7).TrimEnd('}');
                 }
             }
             catch

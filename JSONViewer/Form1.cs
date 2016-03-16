@@ -171,6 +171,7 @@ namespace JSONViewer
                     int indexOfRoot = (objCopy.ToString()).IndexOf("JSON");
                     txtInput.Text = (objCopy.ToString()).Substring(indexOfRoot + 7).TrimEnd('}');
                 }
+                btnJsonToTree_Click(sender, e);
             }
             catch
             {

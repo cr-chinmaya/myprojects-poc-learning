@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyWebApplication", "MyWebApplication\MyWebApplication.csproj", "{27F7E084-4E5A-4F8C-8B28-6AE6496D3FF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyWebApplication", "..\MyWebApplication\MyWebApplication.csproj", "{27F7E084-4E5A-4F8C-8B28-6AE6496D3FF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogProvider", "LogProvider\LogProvider.csproj", "{5B3F1F03-39B9-4D35-9558-650FFF410027}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogProvider", "..\LogProvider\LogProvider.csproj", "{5B3F1F03-39B9-4D35-9558-650FFF410027}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
